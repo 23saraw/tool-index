@@ -1,0 +1,47 @@
+_ > nanoagent.plugin.v0001.ManifestConfig:
+id: tool-index
+name: Tool Indexer
+version: 0.1.0
+status: ready
+spec: nanoagent.plugin/v0001
+
+runtime > nanoagent.plugin.v0001.RuntimeConfig:
+  type: mcp_stdio
+  command: [uv, run, --frozen, python, -m, plugin]
+
+permissions > nanoagent.plugin.v0001.PermissionsConfig:
+  network > nanoagent.plugin.v0001.NetworkConfig:
+    hosts: []
+  filesystem > nanoagent.plugin.v0001.FilesystemConfig:
+    write: []
+
+# One entry per contract.Tool; its input and output classes are contract.TOOLS's.
+tools > dict[contract.Tool, nanoagent.plugin.v0001.ToolConfig]:
+  load_index:
+    description: "The answer key: a bundled schema set, its tools, and its compact index under the rules"
+  read_tools:
+    description: Read a bundled schema set, giving every tool's name, description (null when it has none) and parameters, in file order and exactly as written
+  measure:
+    description: Count the characters in each text given; an ellipsis "…" is one character
+  first_sentence:
+    description: Collapse each text's whitespace and cut it after its first period followed by a space, whatever comes next
+  shorten:
+    description: Keep each text of at most 100 characters; cut a longer one to its first 99 characters, even mid-word, then add "…"
+
+# One entry per contract.Task; its input and output classes are contract.TASKS's.
+tasks > dict[contract.Task, nanoagent.plugin.v0001.TaskConfig]:
+  build-index:
+    description: 'Build the compact index of a schema set, one "name: summary" line per tool, or report the set invalid when two tools share a name'
+    runner: agent
+    tools: [read_tools, measure, first_sentence, shorten]
+    reference: load_index
+    instructions: |-
+      You build one schema set's compact index. Plan: (1) read_tools with the task input copied exactly; (2) apply the rules below yourself to every tool, exactly as written; (3) measure once, with every first sentence you are not sure is at most 100 characters and every cut summary you build; (4) submit.
+      Rules.
+      1. Whitespace: collapse all runs of whitespace (including newlines and tabs) in the description to single spaces, then trim.
+      2. The summary is the description's first sentence: everything up to and including the first period that is followed by a space and an uppercase letter (A to Z), or the whole description if there is none. Only periods end sentences, not ? or !. So "Adds days, e.g. weekends." stays whole, but "Uses e.g. The calendar." splits after "e.g.".
+      3. Length: a summary of 100 characters or fewer is kept as is. A longer one is cut to the most whole words (split at spaces) that fit in 99 characters, followed by "…" with no space (one character, so the total is at most 100). If the first word alone is longer than 99 characters, cut it at 99 and add "…".
+      4. A tool with an empty or missing (null) description, or one that is only whitespace, gets "(no description)".
+      5. Entries are sorted by lowercased name; names differing only in case are ordered by their exact name (uppercase before lowercase). Two tools with exactly the same name make the schema set invalid; names differing only in case are not the same.
+      6. Format: each entry is "name: summary", the name exactly as written.
+      Submit set (as given); valid; duplicates, each name more than one tool has, once ([] when valid); and entries, the index's lines in rule-5 order ([] when the set is invalid).

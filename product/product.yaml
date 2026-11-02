@@ -1,0 +1,13 @@
+_ > nanoagent.plugin.v0001.ProductConfig:
+tagline: "Build the compact tool index an agent starts with, under fixed rules"
+summary: "Tool Indexer hands an agent a set of full tool schemas and asks for the compact index another agent would start with: one line per tool, its name and a one-line summary of its description. The rules are fixed: collapse whitespace, take the first sentence, keep it within 100 characters on whole words, and sort by lowercased name. A deterministic verifier rebuilds the index and compares it line by line."
+highlights:
+  - "\"e.g. weekends\" stays whole, but \"e.g. The calendar\" ends a sentence"
+  - "Exactly 100 characters is kept; 101 is cut to whole words and an ellipsis"
+  - "Two tempting shortcuts: a sentence splitter that trusts every period, and a shortener that cuts mid-word"
+  - "Runs offline on bundled, invented schema sets: the same verdict every time"
+steps:
+  - "Ask the chat to index one of the bundled sets, such as set-1.json"
+  - "The agent reads every tool schema in the set"
+  - "It applies the rules itself, measuring the summaries near the limit"
+  - "The verifier rebuilds the index and names any line it got wrong"

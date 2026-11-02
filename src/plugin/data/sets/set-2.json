@@ -1,0 +1,6 @@
+[
+  {"name": "send_note", "description": "Sends a note to a contact.", "parameters": {"type": "object", "properties": {"to": {"type": "string"}}, "required": ["to"]}},
+  {"name": "list_notes", "description": "Lists notes in a folder.", "parameters": {"type": "object", "properties": {"folder": {"type": "string"}}, "required": []}},
+  {"name": "send_note", "description": "Sends a note by email. Needs an address.", "parameters": {"type": "object", "properties": {"address": {"type": "string"}}, "required": ["address"]}},
+  {"name": "Send_note", "description": "Sends a note now.", "parameters": {"type": "object", "properties": {}, "required": []}}
+]

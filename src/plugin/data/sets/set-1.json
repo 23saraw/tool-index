@@ -1,0 +1,16 @@
+[
+  {"name": "find_slots", "description": "Finds open meeting slots across every invited calendar, skipping holidays and any blocked focus time. Results are sorted by start time.", "parameters": {"type": "object", "properties": {"duration": {"type": "integer"}, "attendees": {"type": "array", "items": {"type": "string"}}}, "required": ["duration"]}},
+  {"name": "merge_contacts", "description": "Merges duplicate contacts that share one email address or phone number, then keeps the newest entry. Older entries are archived, not deleted.", "parameters": {"type": "object", "properties": {"dry_run": {"type": "boolean"}}, "required": []}},
+  {"name": "add_days", "description": "Adds days to a date, e.g. weekends.", "parameters": {"type": "object", "properties": {"date": {"type": "string"}, "days": {"type": "integer"}}, "required": ["date", "days"]}},
+  {"name": "pick_source", "description": "Uses e.g. The calendar feed. Falls back to local time.", "parameters": {"type": "object", "properties": {"source": {"type": "string"}}, "required": []}},
+  {"name": "ping_service", "description": "Checks that the service is up and answering", "parameters": {"type": "object", "properties": {}, "required": []}},
+  {"name": "ask_user", "description": "Asks the user a question? Waits for the reply! Then returns it. Times out after a minute.", "parameters": {"type": "object", "properties": {"question": {"type": "string"}}, "required": ["question"]}},
+  {"name": "export_notes", "description": "Exports notes as Markdown.\n\n  Each note becomes one file.", "parameters": {"type": "object", "properties": {"folder": {"type": "string"}}, "required": []}},
+  {"name": "Export_notes", "description": "  Exports   notes as plain\ttext,\none file per folder.", "parameters": {"type": "object", "properties": {"folder": {"type": "string"}}, "required": []}},
+  {"name": "log_event", "description": "", "parameters": {"type": "object", "properties": {"event": {"type": "string"}}, "required": ["event"]}},
+  {"name": "clear_cache", "parameters": {"type": "object", "properties": {}, "required": []}},
+  {"name": "noop", "description": " \n\t ", "parameters": {"type": "object", "properties": {}, "required": []}},
+  {"name": "hash_blob", "description": "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789 is the test vector for this hash. Others are optional.", "parameters": {"type": "object", "properties": {"blob": {"type": "string"}}, "required": ["blob"]}},
+  {"name": "Zeta_sync", "description": "Syncs the zeta store. Runs nightly.", "parameters": {"type": "object", "properties": {}, "required": []}},
+  {"name": "alpha_sync", "description": "Syncs the alpha store.", "parameters": {"type": "object", "properties": {}, "required": []}}
+]
